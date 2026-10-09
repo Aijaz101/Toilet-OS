@@ -1,0 +1,1342 @@
+<!-- aha-release: 17 -->
+<!-- aha-build-id: bmuubsg08fohpqc8t -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TOILET OS 9000</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --void: #05070c;
+      --midnight: #070b14;
+      --panel: rgba(10, 16, 28, 0.62);
+      --cyan: #00f0ff;
+      --purple: #b44cff;
+      --green: #3dff8a;
+      --yellow: #ffe14a;
+      --red: #ff2d55;
+      --pink: #ff5ec8;
+      --signal-tech: var(--cyan);
+      --signal-ai: var(--purple);
+      --signal-ok: var(--green);
+      --signal-warn: var(--yellow);
+      --signal-crit: var(--red);
+      --signal-play: var(--pink);
+      --glass: rgba(255,255,255,0.06);
+      --line: rgba(0, 240, 255, 0.38);
+      --text: #eef6ff;
+      --muted: #9aadc4;
+      --radius: 18px;
+      --shadow: 0 24px 80px rgba(0,0,0,.55), 0 0 40px rgba(0,240,255,.18);
+      --glow-tech: 0 0 18px rgba(0,240,255,.45);
+      --glow-ai: 0 0 18px rgba(180,76,255,.45);
+      --glow-ok: 0 0 18px rgba(61,255,138,.45);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      background: var(--void);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(900px 500px at 18% 8%, rgba(0,240,255,.14), transparent 55%),
+        radial-gradient(700px 480px at 82% 12%, rgba(180,76,255,.16), transparent 50%),
+        radial-gradient(600px 400px at 50% 100%, rgba(61,255,138,.08), transparent 55%),
+        linear-gradient(180deg, var(--midnight) 0%, var(--void) 40%, #04060a 100%);
+    }
+    .grid-overlay {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .22;
+      background-image:
+        linear-gradient(rgba(0,240,255,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,240,255,.08) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 75%);
+    }
+    .shell { position: relative; z-index: 1; max-width: 1320px; margin: 0 auto; padding: 20px 20px 48px; }
+    header {
+      text-align: center;
+      padding: 22px 18px 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      backdrop-filter: blur(18px); border-radius: 16px;
+      box-shadow: 0 0 0 1px rgba(0,240,255,.16), var(--shadow);
+    }
+    header h1 {
+      font-family: Orbitron, sans-serif; font-size: clamp(22px, 4vw, 36px);
+      letter-spacing: .22em; font-weight: 800;
+      text-shadow: var(--glow-tech);
+    }
+    header p {
+      margin-top: 8px; color: var(--cyan); font-family: Orbitron, sans-serif;
+      font-size: 11px; letter-spacing: .2em;
+    }
+    .ops {
+      display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 16px;
+    }
+    .chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 12px; border-radius: 999px; font-size: 11px; letter-spacing: .08em;
+      text-transform: uppercase; border: 1px solid var(--line); background: var(--glass);
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot.live { background: var(--green); box-shadow: 0 0 10px var(--green); }
+    .sys-banner {
+      margin-top: 16px; display: flex; align-items: center; justify-content: center; gap: 18px;
+      padding: 14px 20px; border-radius: var(--radius);
+      border: 1px solid rgba(61,255,138,.45);
+      background: linear-gradient(90deg, rgba(61,255,138,.12), rgba(0,240,255,.08));
+      box-shadow: 0 0 28px rgba(61,255,138,.18);
+    }
+    .sys-banner span {
+      font-family: Orbitron, sans-serif; letter-spacing: .2em; font-size: 11px; color: var(--muted);
+    }
+    .sys-banner strong {
+      font-family: Orbitron, sans-serif; font-size: 22px; color: var(--green);
+      letter-spacing: .16em; text-shadow: 0 0 18px rgba(61,255,138,.65);
+    }
+    .hero {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: 240px 1fr 240px;
+      gap: 16px;
+      align-items: center;
+    }
+    .col { display: flex; flex-direction: column; gap: 12px; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      backdrop-filter: blur(22px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12), var(--shadow);
+      padding: 16px;
+    }
+    .kicker {
+      font-family: Orbitron, sans-serif; font-size: 9px; letter-spacing: .2em;
+      color: var(--cyan); text-transform: uppercase; margin-bottom: 6px;
+    }
+    .val {
+      font-family: Orbitron, sans-serif; font-size: 22px;
+      text-shadow: 0 0 14px rgba(0,240,255,.4);
+    }
+    .hint { color: var(--muted); font-size: 12px; margin-top: 4px; }
+    .bar { height: 6px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; margin-top: 10px; }
+    .bar i { display: block; height: 100%; border-radius: 99px; box-shadow: 0 0 10px currentColor; }
+    .card.tele {
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 0 0 1px rgba(0,240,255,.18), var(--shadow);
+    }
+    .kicker { font-family: Orbitron, sans-serif; font-size: 9px; letter-spacing: .2em; color: var(--cyan); text-transform: uppercase; margin-bottom: 6px; }
+    @keyframes livebar { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.35); } }
+    .bar i.live { animation: livebar 2.4s ease-in-out infinite; }
+    .stage {
+      position: relative; min-height: 560px;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+      overflow: hidden;
+    }
+    .ring {
+      position: absolute; inset: 16px; border: 1px dashed rgba(180,76,255,.35); border-radius: 22px; pointer-events: none;
+    }
+    .halo {
+      position: absolute; width: 320px; height: 320px; border-radius: 50%;
+      bottom: 90px; left: 50%; transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(0,240,255,.38), transparent 68%);
+      filter: blur(8px); pointer-events: none;
+    }
+    .telemetry {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+    .telemetry line { stroke: rgba(0,240,255,.35); stroke-width: 1; }
+    .pt { fill: var(--cyan); filter: drop-shadow(0 0 6px var(--cyan)); }
+    .stage img { display: none; }
+    .hw {
+      width: min(420px, 90%); height: auto; position: relative; z-index: 1;
+      filter: drop-shadow(0 28px 40px rgba(0,0,0,.65)) drop-shadow(0 0 32px rgba(0,240,255,.4));
+    }
+    .launch {
+      margin-top: 18px; display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+    button { font-family: Orbitron, sans-serif; letter-spacing: .1em; cursor: pointer; }
+    .btn-primary {
+      border: 0; border-radius: 16px; padding: 18px 28px; font-size: 14px; font-weight: 800;
+      color: #041018;
+      background: linear-gradient(135deg, var(--cyan), #3de8ff 55%, #00c8e0);
+      box-shadow: 0 0 40px rgba(0,240,255,.55), 0 16px 40px rgba(0,0,0,.4);
+    }
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--line); border-radius: 12px; padding: 10px 16px; font-size: 11px;
+    }
+    .overlay {
+      position: fixed; inset: 0; z-index: 40; display: none;
+      align-items: center; justify-content: center; padding: 20px;
+      background: rgba(2,4,10,.78); backdrop-filter: blur(10px);
+    }
+    .overlay.open { display: flex; }
+    .diag {
+      width: min(640px, 100%); max-height: 90vh; overflow: auto;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 22px;
+      box-shadow: 0 0 60px rgba(0,240,255,.2), var(--shadow);
+      padding: 22px 22px 20px; position: relative;
+    }
+    .diag h2 { font-family: Orbitron, sans-serif; letter-spacing: .16em; font-size: 16px; }
+    .scanline {
+      height: 2px; margin: 14px 0 18px; overflow: hidden; background: rgba(255,255,255,.08);
+    }
+    .scanline i {
+      display: block; height: 100%; width: 30%;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      animation: sweep 1.2s linear infinite;
+    }
+    @keyframes sweep { from { transform: translateX(-100%); } to { transform: translateX(350%); } }
+    .check {
+      display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.06);
+      opacity: .35;
+    }
+    .check.active { opacity: 1; }
+    .check.done { opacity: 1; }
+    .check .name { font-family: Orbitron, sans-serif; font-size: 11px; letter-spacing: .12em; }
+    .check .st { font-family: Orbitron, sans-serif; font-size: 11px; letter-spacing: .14em; color: var(--muted); }
+    .check.pass .st { color: var(--green); text-shadow: 0 0 10px var(--green); }
+    .check.warn .st { color: var(--yellow); text-shadow: 0 0 10px var(--yellow); }
+    .mini { height: 3px; background: rgba(255,255,255,.08); border-radius: 99px; grid-column: 1 / -1; }
+    .mini b { display: block; height: 100%; width: 0; background: var(--cyan); border-radius: 99px; transition: width .7s ease; }
+    .check.active .mini b { width: 100%; }
+    .check.pass .mini b { width: 100%; background: var(--green); }
+    .check.warn .mini b { width: 100%; background: var(--yellow); }
+    .warn-note { display: none; color: var(--yellow); font-size: 12px; grid-column: 1 / -1; }
+    .check.warn .warn-note { display: block; }
+    .done-box { display: none; margin-top: 18px; text-align: center; }
+    .done-box.show { display: block; }
+    .done-box p { font-family: Orbitron, sans-serif; letter-spacing: .12em; font-size: 12px; color: var(--green); margin-bottom: 6px; }
+    .done-box strong { display: block; font-family: Orbitron, sans-serif; letter-spacing: .1em; margin-bottom: 16px; }
+    .btn-return {
+      border: 0; border-radius: 14px; padding: 14px 22px; font-size: 12px; font-weight: 800;
+      color: #041018; background: linear-gradient(135deg, var(--green), var(--cyan));
+      box-shadow: 0 0 28px rgba(61,255,138,.45);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .scanline i { animation: none; width: 100%; }
+    }
+    .tobi {
+      margin-top: 22px; padding: 20px;
+    }
+    .tobi-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+    .tobi-head h2 { font-family: Orbitron, sans-serif; letter-spacing: .2em; font-size: 20px; color: var(--purple); text-shadow: var(--glow-ai); }
+    .tobi-head p { color: var(--muted); font-size: 11px; letter-spacing: .14em; margin-top: 4px; }
+    .ai-stat { text-align: right; }
+    .ai-stat span { display: block; font-size: 10px; letter-spacing: .16em; color: var(--muted); }
+    .ai-stat strong { color: var(--green); font-family: Orbitron, sans-serif; letter-spacing: .14em; text-shadow: 0 0 12px var(--green); }
+    .pulse {
+      width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 8px;
+      background: var(--green); box-shadow: 0 0 14px var(--green); vertical-align: middle;
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse { 50% { opacity: .45; transform: scale(.9); } }
+    .feed {
+      margin-top: 14px; min-height: 120px; max-height: 220px; overflow: auto;
+      padding: 12px; border-radius: 14px; border: 1px solid rgba(180,76,255,.35);
+      background: rgba(0,0,0,.25);
+    }
+    .msg { font-size: 14px; line-height: 1.5; margin-bottom: 10px; color: var(--text); }
+    .msg em { color: var(--purple); font-style: normal; font-family: Orbitron, sans-serif; font-size: 10px; letter-spacing: .12em; margin-right: 8px; }
+    .qs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .qs button {
+      background: rgba(255,255,255,.04); color: var(--text); border: 1px solid var(--line);
+      border-radius: 999px; padding: 8px 12px; font-size: 10px;
+    }
+    .btn-ask {
+      margin-top: 14px; border: 0; border-radius: 14px; padding: 14px 20px; font-size: 12px; font-weight: 800;
+      color: #041018; background: linear-gradient(135deg, var(--purple), var(--cyan));
+      box-shadow: 0 0 24px rgba(180,76,255,.4);
+    }
+    .cap-err { display: none; margin-top: 10px; color: var(--yellow); font-size: 13px; }
+    .cap-err.show { display: block; }
+    .xp-body { min-height: 220px; font-family: Orbitron, sans-serif; }
+    .xp-step { font-size: 10px; letter-spacing: .22em; color: var(--cyan); margin-bottom: 8px; }
+    .xp-title { font-size: 18px; letter-spacing: .14em; margin-bottom: 10px; }
+    .xp-line { font-size: 13px; letter-spacing: .1em; margin: 6px 0; color: var(--text); }
+    .xp-line.ok { color: var(--green); text-shadow: 0 0 12px var(--green); }
+    .xp-final { text-align: center; padding: 12px 0; }
+    .xp-final h3 { font-size: 22px; letter-spacing: .16em; color: var(--green); text-shadow: 0 0 20px var(--green), 0 0 40px var(--purple); }
+    .xp-final p { color: var(--cyan); margin: 10px 0 18px; letter-spacing: .14em; }
+    .score-ring { width: 148px; height: 148px; margin: 8px auto 12px; border-radius: 50%; display: grid; place-items: center;
+      background: radial-gradient(circle, rgba(0,240,255,.18), transparent 62%), conic-gradient(var(--cyan) calc(var(--pct, 87) * 1%), rgba(255,255,255,.08) 0);
+      box-shadow: 0 0 28px rgba(0,240,255,.35); }
+    .score-ring span { width: 108px; height: 108px; border-radius: 50%; background: #071018; display: grid; place-items: center;
+      font-family: Orbitron, sans-serif; font-size: 22px; color: var(--cyan); text-shadow: 0 0 16px var(--cyan); }
+    .flush-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+    .inst { padding: 10px; border: 1px solid var(--line); border-radius: 12px; background: rgba(0,240,255,.05); }
+    .inst .k { font-size: 9px; letter-spacing: .16em; color: var(--cyan); }
+    .inst .v { font-family: Orbitron, sans-serif; font-size: 16px; margin-top: 4px; }
+    .btn-exec {
+      width: 100%; margin-top: 8px; border: 0; border-radius: 14px; padding: 16px;
+      font-size: 14px; font-weight: 800; color: #041018;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      box-shadow: 0 0 28px rgba(0,240,255,.45);
+    }
+    .count { font-size: 42px; text-align: center; color: var(--cyan); text-shadow: 0 0 24px var(--cyan); letter-spacing: .2em; }
+    .wx-days { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px; }
+    .wx-day { padding: 10px 8px; border: 1px solid var(--line); border-radius: 12px; background: rgba(0,0,0,.25); cursor: pointer; font-size: 11px; }
+    .wx-day.active { border-color: var(--cyan); box-shadow: 0 0 16px rgba(0,240,255,.25); }
+    .wx-day h4 { font-family: Orbitron, sans-serif; font-size: 10px; letter-spacing: .1em; margin-bottom: 6px; color: var(--cyan); }
+    .radar { height: 70px; border-radius: 50%; margin: 8px auto; width: 70px; border: 1px solid var(--cyan);
+      background: radial-gradient(circle, rgba(0,240,255,.25), transparent 70%); animation: livebar 2.8s ease-in-out infinite; }
+    @media (max-width: 900px) { .wx-days { grid-template-columns: 1fr 1fr; } }
+    .ticker { overflow: hidden; white-space: nowrap; border: 1px solid var(--line); padding: 6px 0; margin: 8px 0; }
+    .ticker span { display: inline-block; animation: tick 18s linear infinite; font-size: 11px; letter-spacing: .08em; }
+    @keyframes tick { from { transform: translateX(10%); } to { transform: translateX(-80%); } }
+    .flash { animation: livebar 1s ease-in-out infinite; }
+    .recs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .ach-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .ach-card { padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: rgba(0,0,0,.28); }
+    .ach-card.unlocked { border-color: var(--green); box-shadow: 0 0 16px rgba(61,255,138,.25); }
+    .ach-card.progress { border-color: var(--yellow); }
+    .ach-card.locked { opacity: .55; }
+    .ach-card.legend { grid-column: 1 / -1; border-color: var(--purple); box-shadow: 0 0 28px rgba(180,76,255,.4), 0 0 18px rgba(0,240,255,.3); text-align: center; }
+    .toast { position: fixed; top: 18px; right: 18px; z-index: 80; display: none; max-width: 320px; padding: 14px 18px; border-radius: 14px; border: 1px solid var(--green); background: rgba(8,16,24,.92); box-shadow: 0 0 24px rgba(61,255,138,.4), 0 0 18px rgba(180,76,255,.25); pointer-events: none; }
+    .toast.show { display: block; animation: livebar 1.2s ease; }
+    .toast .tn { font-family: Orbitron, sans-serif; letter-spacing: .12em; color: var(--green); font-size: 11px; }
+    .toast .tt { font-family: Orbitron, sans-serif; color: var(--cyan); margin: 6px 0 4px; }
+    .toast .td { font-size: 12px; color: var(--text); }
+    .toast .tb { color: var(--purple); font-size: 11px; margin-top: 8px; }
+    .toast.rare { border-color: var(--pink); }
+    .toast.legend { border-color: var(--purple); box-shadow: 0 0 40px rgba(180,76,255,.55), 0 0 24px rgba(0,240,255,.35); }
+    button { transition: transform .12s ease, filter .18s ease, box-shadow .18s ease, border-color .18s ease; }
+    button:hover { filter: brightness(1.12); box-shadow: 0 0 18px rgba(0,240,255,.28); transform: translateY(-1px); }
+    button:active { transform: scale(.97); filter: brightness(1.2); }
+    .btn-primary:hover { box-shadow: 0 0 48px rgba(0,240,255,.7), 0 16px 40px rgba(0,0,0,.4); }
+    .pulse-ok { animation: pulseOk .45s ease; }
+    .pulse-warn { animation: pulseWarn .7s ease; }
+    .pulse-crit { animation: pulseCrit .7s ease; }
+    @keyframes pulseOk { 0% { box-shadow: 0 0 0 0 rgba(61,255,138,.5); } 100% { box-shadow: 0 0 0 14px transparent; } }
+    @keyframes pulseWarn { 0%,100% { box-shadow: 0 0 0 0 rgba(255,225,74,.15); } 50% { box-shadow: 0 0 18px rgba(255,225,74,.45); } }
+    @keyframes pulseCrit { 0%,100% { box-shadow: 0 0 0 0 rgba(255,45,85,.2); } 50% { box-shadow: 0 0 22px rgba(255,45,85,.55); } }
+    .overlay { opacity: 0; transition: opacity .18s ease; }
+    .overlay.open { opacity: 1; animation: hudIn .22s ease; }
+    .overlay.open .diag { animation: panelExpand .28s ease; }
+    @keyframes hudIn { from { background: rgba(2,4,10,.2); } to { background: rgba(2,4,10,.78); } }
+    @keyframes panelExpand { from { transform: scale(.98); filter: brightness(1.15); } to { transform: none; filter: none; } }
+    .hud-sweep { position: fixed; inset: 0; pointer-events: none; z-index: 90; opacity: 0; background: linear-gradient(90deg, transparent, rgba(0,240,255,.22), transparent); }
+    .hud-sweep.go { animation: streak .32s ease; }
+    @keyframes streak { from { opacity: 0; transform: translateX(-40%); } 40% { opacity: 1; } to { opacity: 0; transform: translateX(40%); } }
+    .sys-msg { position: fixed; left: 18px; bottom: 18px; z-index: 70; max-width: 280px; font-size: 11px; letter-spacing: .08em; color: var(--muted); opacity: 0; pointer-events: none; border: 1px solid var(--line); padding: 8px 10px; border-radius: 10px; background: rgba(5,8,14,.72); }
+    .sys-msg.show { opacity: 1; transition: opacity .4s ease; }
+    .tobi { position: relative; overflow: hidden; }
+    .tobi .scan { position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--purple), transparent); top: 20%; opacity: .35; animation: tobiScan 4.8s ease-in-out infinite; pointer-events: none; }
+    @keyframes tobiScan { 0%,100% { top: 18%; opacity: .15; } 50% { top: 72%; opacity: .45; } }
+    .tobi.st-0 .pulse { background: var(--purple); box-shadow: 0 0 16px var(--purple); animation: pulse 1.2s ease-in-out infinite; }
+    .tobi.st-1 .pulse { background: var(--purple); animation: pulse 1.8s ease-in-out infinite; }
+    .tobi.st-2 .pulse { animation: pulse 2.2s ease-in-out infinite; opacity: .85; }
+    .tobi.st-3 .pulse { animation: pulse 2.8s ease-in-out infinite; opacity: .65; }
+    .tobi.st-4 .pulse { background: #4a2068; box-shadow: 0 0 8px #4a2068; animation: pulse 3.6s ease-in-out infinite; }
+    .warn-edge { outline: 1px solid var(--yellow); animation: pulseWarn 1.4s ease-in-out infinite; }
+    .crit-edge { outline: 1px solid var(--red); animation: pulseCrit 1s ease-in-out infinite; }
+    .ring-spin { width: 28px; height: 28px; border: 2px solid rgba(0,240,255,.2); border-top-color: var(--cyan); border-radius: 50%; animation: spin .8s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .glass-shine { position: relative; }
+    .glass-shine::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.07) 48%, transparent 62%); animation: shine 8s ease-in-out infinite; }
+    @keyframes shine { 0%,100% { transform: translateX(-20%); opacity: .3; } 50% { transform: translateX(20%); opacity: .7; } }
+    .ach-unlock-pulse { animation: pulseOk .6s ease; }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; }
+      .stage { min-height: 460px; }
+      .col { flex-direction: row; flex-wrap: wrap; }
+      .col .card { flex: 1 1 180px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-overlay"></div>
+  <div class="hud-sweep" id="hud-sweep"></div>
+  <div class="sys-msg" id="sys-msg"></div>
+  <div class="shell">
+    <header>
+      <h1>TOILET OS 9000</h1>
+      <p>THE WORLD'S MOST ADVANCED TOILET OPERATING SYSTEM</p>
+      <div class="ops">
+        <span class="chip"><i class="dot live"></i> Core online</span>
+        <span class="chip"><i class="dot live"></i> Seat array ready</span>
+      </div>
+    </header>
+
+    <div class="sys-banner">
+      <span>SYSTEM STATUS</span>
+      <strong>OPERATIONAL</strong>
+    </div>
+
+    <section class="hero">
+      <div class="col">
+        <article class="card tele">
+          <div class="kicker">WATER PRESSURE</div>
+          <div class="val" style="color:var(--cyan)">48.2 PSI</div>
+          <div class="hint">Mainline stable · 2.1 bar</div>
+          <div class="bar"><i class="live" style="width:78%;background:linear-gradient(90deg,var(--cyan),#7af7ff);color:var(--cyan)"></i></div>
+        </article>
+        <article class="card tele">
+          <div class="kicker">SEAT TEMPERATURE</div>
+          <div class="val" style="color:var(--cyan)">21.4°C</div>
+          <div class="hint">Comfort lock engaged</div>
+          <div class="bar"><i class="live" style="width:62%;background:linear-gradient(90deg,var(--cyan),var(--green));color:var(--cyan)"></i></div>
+        </article>
+        <article class="card tele">
+          <div class="kicker">FLUSH READINESS</div>
+          <div class="val" style="color:var(--green)">READY</div>
+          <div class="hint">100% · vector locked</div>
+          <div class="bar"><i class="live" style="width:100%;background:linear-gradient(90deg,var(--green),var(--cyan));color:var(--green)"></i></div>
+        </article>
+      </div>
+
+      <div class="card stage">
+        <div class="ring"></div>
+        <div class="halo"></div>
+        <svg class="telemetry" viewBox="0 0 600 560" aria-hidden="true">
+          <line x1="40" y1="80" x2="180" y2="220" />
+          <line x1="560" y1="90" x2="420" y2="230" />
+          <line x1="80" y1="480" x2="210" y2="360" />
+          <line x1="520" y1="470" x2="400" y2="350" />
+          <circle class="pt" cx="180" cy="220" r="4" />
+          <circle class="pt" cx="420" cy="230" r="4" />
+          <circle class="pt" cx="210" cy="360" r="4" />
+          <circle class="pt" cx="400" cy="350" r="4" />
+        </svg>
+        <svg class="hw" viewBox="0 0 360 420" role="img" aria-label="premium white ceramic smart toilet, sculpted glossy bowl and tank, immaculate futuristic lighting, sensor ring and holographic interface">
+          <defs>
+            <linearGradient id="cer" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ffffff"/>
+              <stop offset=".45" stop-color="#e8eef6"/>
+              <stop offset="1" stop-color="#cfd8e6"/>
+            </linearGradient>
+            <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+              <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+            </linearGradient>
+            <radialGradient id="bowl" cx=".5" cy=".35" r=".7">
+              <stop offset="0" stop-color="#9ecfff"/>
+              <stop offset=".4" stop-color="#d7e6f5"/>
+              <stop offset="1" stop-color="#8a96a8"/>
+            </radialGradient>
+          </defs>
+          <ellipse cx="180" cy="392" rx="108" ry="10" fill="#00f0ff" opacity=".22"/>
+          <rect x="92" y="338" width="176" height="42" rx="18" fill="url(#cer)"/>
+          <rect x="98" y="348" width="164" height="6" rx="3" fill="#00f0ff" opacity=".55"/>
+          <circle cx="118" cy="368" r="4" fill="#3dff8a"/>
+          <rect x="128" y="148" width="104" height="118" rx="22" fill="url(#cer)"/>
+          <rect x="140" y="160" width="80" height="8" rx="4" fill="#b44cff" opacity=".7"/>
+          <rect x="152" y="178" width="56" height="36" rx="8" fill="#0a1220"/>
+          <text x="180" y="200" text-anchor="middle" fill="#00f0ff" font-size="9" font-family="Orbitron,sans-serif">T9</text>
+          <ellipse cx="180" cy="118" rx="42" ry="16" fill="#00f0ff" opacity=".18"/>
+          <rect x="148" y="88" width="64" height="28" rx="10" fill="url(#cer)"/>
+          <path d="M70 250 C70 200 120 176 180 176 C240 176 290 200 290 250 C290 310 240 338 180 338 C120 338 70 310 70 250Z" fill="url(#cer)"/>
+          <ellipse cx="180" cy="258" rx="78" ry="52" fill="url(#bowl)"/>
+          <ellipse cx="180" cy="248" rx="48" ry="28" fill="#6a7a90" opacity=".55"/>
+          <ellipse cx="180" cy="214" rx="92" ry="22" fill="none" stroke="#00f0ff" stroke-width="3" opacity=".85"/>
+          <path d="M108 196 C130 168 230 168 252 196" fill="url(#cer)" stroke="#d5deea"/>
+          <path d="M120 188 C150 172 210 172 240 188" fill="url(#gloss)"/>
+          <rect x="168" y="128" width="24" height="22" rx="6" fill="url(#cer)"/>
+        </svg>
+      </div>
+
+      <div class="col">
+        <article class="card tele">
+          <div class="kicker">TOILET PAPER</div>
+          <div class="val" style="color:var(--cyan)">14.2 m</div>
+          <div class="hint">Triple-ply reserve · 71%</div>
+          <div class="bar"><i class="live" style="width:71%;background:linear-gradient(90deg,var(--cyan),var(--green));color:var(--cyan)"></i></div>
+        </article>
+        <article class="card tele">
+          <div class="kicker">USER STATUS</div>
+          <div class="val" style="color:var(--yellow)">STANDBY</div>
+          <div class="hint">No occupant detected</div>
+          <div class="bar"><i class="live" style="width:18%;background:linear-gradient(90deg,var(--yellow),var(--pink));color:var(--yellow)"></i></div>
+        </article>
+      </div>
+    </section>
+
+    <div class="launch">
+      <button class="btn-primary" type="button" id="btn-begin">BEGIN TOILET EXPERIENCE</button>
+      <button class="btn-ghost" type="button" id="btn-diag">SYSTEM DIAGNOSTICS</button>
+      <button class="btn-ghost" type="button" id="btn-comedy">TOILET DIAGNOSTICS</button>
+      <button class="btn-ghost" type="button" id="btn-flush">FLUSH ENGINE</button>
+      <button class="btn-ghost" type="button" id="btn-wx">TOILET WEATHER</button>
+      <button class="btn-ghost" type="button" id="btn-tpx">TPX MARKET</button>
+      <button class="btn-ghost" type="button" id="btn-ach">MISSION ACHIEVEMENTS</button>
+    </div>
+
+    <section class="card tobi st-0 glass-shine" id="tobi-card" aria-label="T.O.B.I. intelligence">
+      <div class="scan" aria-hidden="true"></div>
+      <div class="tobi-head">
+        <div>
+          <h2>T.O.B.I.</h2>
+          <p>TOILET OPERATIONAL BEHAVIORAL INTELLIGENCE</p>
+        </div>
+        <div class="ai-stat">
+          <span>AI STATUS</span>
+          <strong><i class="pulse"></i>ONLINE</strong>
+          <span id="tobi-pstat" style="margin-top:6px;color:var(--purple)">PERSONALITY STATUS: HELPFUL</span>
+        </div>
+      </div>
+      <div class="feed" id="tobi-feed" aria-live="polite"></div>
+      <div class="cap-err" id="tobi-err">Service unavailable. Please retry. <button type="button" class="btn-ghost" id="tobi-retry">Retry</button></div>
+      <button class="btn-ask" type="button" id="ask-tobi">ASK T.O.B.I.</button>
+      <div class="qs">
+        <button type="button" data-q="HOW AM I DOING?">HOW AM I DOING?</button>
+        <button type="button" data-q="IS THE TOILET READY?">IS THE TOILET READY?</button>
+        <button type="button" data-q="CHECK MY STATUS">CHECK MY STATUS</button>
+        <button type="button" data-q="WHAT COULD GO WRONG?">WHAT COULD GO WRONG?</button>
+      </div>
+    </section>
+  </div>
+  <div class="toast" id="ach-toast" role="status"></div>
+  <div class="overlay" id="ach-overlay" role="dialog" aria-modal="true" aria-labelledby="ach-title">
+    <div class="diag" style="width:min(860px,100%)">
+      <h2 id="ach-title">TOILET OS 9000</h2>
+      <p style="color:var(--muted);font-size:11px;letter-spacing:.14em">MISSION ACHIEVEMENTS</p>
+      <div id="ach-panel"></div>
+      <div class="done-box show" style="margin-top:10px">
+        <button class="btn-return" type="button" id="ach-return">RETURN TO MISSION CONTROL</button>
+      </div>
+    </div>
+  </div>
+  <div class="overlay" id="tpx-overlay" role="dialog" aria-modal="true" aria-labelledby="tpx-title">
+    <div class="diag" style="width:min(900px,100%)">
+      <h2 id="tpx-title">TPX</h2>
+      <p style="color:var(--muted);font-size:11px;letter-spacing:.14em">GLOBAL TOILET PAPER INDEX</p>
+      <div class="scanline"><i></i></div>
+      <div id="tpx-panel"></div>
+      <div class="done-box show" style="margin-top:10px">
+        <button class="btn-return" type="button" id="tpx-return">RETURN TO MISSION CONTROL</button>
+      </div>
+    </div>
+  </div>
+  <div class="overlay" id="wx-overlay" role="dialog" aria-modal="true" aria-labelledby="wx-title">
+    <div class="diag" style="width:min(860px,100%)">
+      <h2 id="wx-title">TOILET WEATHER</h2>
+      <p style="color:var(--muted);font-size:11px;letter-spacing:.14em;margin-top:4px">ADVANCED BOWL ENVIRONMENTAL FORECASTING SYSTEM</p>
+      <div class="scanline"><i></i></div>
+      <div id="wx-panel"></div>
+      <div class="done-box show" style="margin-top:12px">
+        <button class="btn-return" type="button" id="wx-return">RETURN TO MISSION CONTROL</button>
+      </div>
+    </div>
+  </div>
+  <div class="overlay" id="fe-overlay" role="dialog" aria-modal="true" aria-labelledby="fe-title">
+    <div class="diag">
+      <h2 id="fe-title">FLUSH ENGINE</h2>
+      <div class="scanline"><i></i></div>
+      <div id="fe-panel"></div>
+      <div class="done-box" id="fe-done">
+        <button class="btn-return" type="button" id="fe-return">RETURN TO MISSION CONTROL</button>
+      </div>
+    </div>
+  </div>
+  <div class="overlay" id="td-overlay" role="dialog" aria-modal="true" aria-labelledby="td-title">
+    <div class="diag">
+      <h2 id="td-title">TOILET DIAGNOSTICS</h2>
+      <div class="scanline"><i></i></div>
+      <div class="xp-body" id="td-body"></div>
+      <div class="done-box" id="td-done">
+        <button class="btn-return" type="button" id="td-return">RETURN TO MISSION CONTROL</button>
+      </div>
+    </div>
+  </div>
+  <div class="overlay" id="xp-overlay" role="dialog" aria-modal="true" aria-labelledby="xp-title">
+    <div class="diag">
+      <h2 id="xp-title">TOILET OS 9000</h2>
+      <div class="scanline"><i></i></div>
+      <div class="xp-body" id="xp-body"></div>
+      <div class="done-box" id="xp-done">
+        <button class="btn-return" type="button" id="xp-return">RETURN TO MISSION CONTROL</button>
+      </div>
+    </div>
+  </div>
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="diag-title">
+    <div class="diag">
+      <h2 id="diag-title">SYSTEM DIAGNOSTICS</h2>
+      <div class="scanline"><i></i></div>
+      <div id="checks"></div>
+      <div class="done-box" id="done">
+        <p>SYSTEM DIAGNOSTICS COMPLETE</p>
+        <strong>TOILET OS 9000 IS FULLY OPERATIONAL</strong>
+        <button class="btn-return" type="button" id="btn-return">RETURN TO MISSION CONTROL</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const checks = [
+      { name: "CERAMIC STRUCTURAL INTEGRITY", result: "PASS" },
+      { name: "WATER PRESSURE SYSTEM", result: "PASS" },
+      { name: "FLUSH MECHANISM", result: "PASS" },
+      { name: "SEAT TEMPERATURE CONTROL", result: "PASS" },
+      { name: "TOILET PAPER AVAILABILITY", result: "PASS" },
+      { name: "ODOR CONTAINMENT SYSTEM", result: "PASS" },
+      { name: "USER READINESS", result: "WARNING", note: "USER APPEARS EMOTIONALLY UNPREPARED." }
+    ];
+    function closeAllOverlays() {
+      document.querySelectorAll(".overlay.open").forEach(el => el.classList.remove("open"));
+    }
+    const overlay = document.getElementById("overlay");
+    const list = document.getElementById("checks");
+    const done = document.getElementById("done");
+    const btnDiag = document.getElementById("btn-diag");
+    const btnReturn = document.getElementById("btn-return");
+    let timer;
+    let audioCtx;
+    function ac() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return audioCtx;
+    }
+    function tone(freq, dur, type, vol, slide) {
+      try {
+        const c = ac();
+        const o = c.createOscillator();
+        const g = c.createGain();
+        const f = c.createBiquadFilter();
+        o.type = type || "sine";
+        o.frequency.value = freq;
+        if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(40, slide), c.currentTime + dur);
+        f.type = "lowpass"; f.frequency.value = 2400;
+        g.gain.value = 0.0001;
+        g.gain.exponentialRampToValueAtTime(vol || 0.045, c.currentTime + 0.012);
+        g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + dur);
+        o.connect(f); f.connect(g); g.connect(c.destination);
+        o.start(); o.stop(c.currentTime + dur + 0.02);
+      } catch (e) {}
+    }
+    function noiseBurst(dur, vol, hp) {
+      try {
+        const c = ac();
+        const n = c.createBufferSource();
+        const buf = c.createBuffer(1, c.sampleRate * dur, c.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+        n.buffer = buf;
+        const f = c.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = hp || 900; f.Q.value = 0.7;
+        const g = c.createGain(); g.gain.value = vol || 0.03;
+        g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + dur);
+        n.connect(f); f.connect(g); g.connect(c.destination);
+        n.start();
+      } catch (e) {}
+    }
+    const SFX = {
+      click() { tone(880, 0.05, "triangle", 0.03); },
+      begin() { tone(180, 0.18, "sine", 0.05, 420); setTimeout(() => tone(520, 0.16, "sine", 0.04, 880), 160); },
+      scan() { tone(640, 0.12, "sine", 0.03, 980); noiseBurst(0.08, 0.015, 1800); },
+      seatOk() { tone(880, 0.1, "sine", 0.04); setTimeout(() => tone(1174, 0.12, "sine", 0.035), 70); },
+      bio() { tone(420, 0.18, "triangle", 0.03, 760); },
+      verified() { tone(660, 0.08, "sine", 0.04); setTimeout(() => tone(990, 0.14, "sine", 0.045), 80); },
+      diagBeep() { tone(820, 0.05, "square", 0.018); },
+      pass() { tone(920, 0.09, "sine", 0.035); },
+      warn() { tone(220, 0.18, "triangle", 0.04); tone(180, 0.22, "sine", 0.02); },
+      unprepared() { tone(140, 0.08, "sawtooth", 0.02); setTimeout(() => tone(980, 0.06, "sine", 0.03), 90); },
+      initiated() { tone(196, 0.2, "sine", 0.05, 523); setTimeout(() => tone(784, 0.22, "sine", 0.04), 180); },
+      hydraulic() { noiseBurst(0.22, 0.04, 220); tone(90, 0.28, "sine", 0.05, 160); },
+      armed() { tone(110, 0.16, "square", 0.03); setTimeout(() => tone(330, 0.14, "sine", 0.04), 90); },
+      pressure() { tone(140, 0.32, "sine", 0.035, 280); },
+      lock() { tone(1480, 0.06, "square", 0.02); tone(740, 0.1, "sine", 0.03); },
+      count(n) { tone(400 + n * 80, 0.1, "triangle", 0.04); },
+      execute() { noiseBurst(0.45, 0.055, 380); tone(70, 0.4, "sine", 0.06, 220); setTimeout(() => tone(880, 0.2, "sine", 0.04, 1320), 280); },
+      success() { tone(523, 0.1, "sine", 0.04); setTimeout(() => tone(784, 0.12, "sine", 0.04), 90); setTimeout(() => tone(1046, 0.16, "sine", 0.045), 180); },
+      weather() { tone(320, 0.2, "sine", 0.025, 240); noiseBurst(0.15, 0.012, 600); },
+      day() { tone(720, 0.07, "triangle", 0.025); },
+      severe() { tone(160, 0.22, "sawtooth", 0.03); setTimeout(() => tone(120, 0.2, "sine", 0.035), 120); },
+      market() { tone(880, 0.08, "square", 0.02); setTimeout(() => tone(1100, 0.1, "triangle", 0.025), 70); },
+      mopen() { tone(660, 0.08, "sine", 0.03); setTimeout(() => tone(880, 0.1, "sine", 0.035), 80); },
+      panic() { tone(420, 0.05, "square", 0.02); setTimeout(() => tone(380, 0.05, "square", 0.02), 60); setTimeout(() => tone(500, 0.06, "square", 0.02), 120); },
+      bigroll() { tone(880, 0.08, "sine", 0.04); setTimeout(() => tone(1174, 0.1, "sine", 0.04), 90); setTimeout(() => tone(1568, 0.16, "triangle", 0.035), 180); },
+      ach() { tone(523, 0.1, "sine", 0.04); setTimeout(() => tone(659, 0.1, "sine", 0.04), 100); setTimeout(() => tone(784, 0.18, "sine", 0.045), 200); },
+      achRare() { tone(392, 0.12, "sine", 0.04); setTimeout(() => tone(523, 0.12, "sine", 0.04), 110); setTimeout(() => tone(784, 0.14, "sine", 0.045), 220); setTimeout(() => tone(1046, 0.2, "sine", 0.04), 340); },
+      achLegend() { tone(196, 0.18, "sine", 0.05); setTimeout(() => tone(392, 0.16, "sine", 0.04), 140); setTimeout(() => tone(587, 0.16, "sine", 0.04), 280); setTimeout(() => tone(784, 0.22, "sine", 0.05), 430); },
+      score() { tone(440, 0.14, "sine", 0.03, 660); },
+      high() { tone(880, 0.16, "sine", 0.04, 1320); },
+      low() { tone(440, 0.2, "sine", 0.035, 180); },
+      dignity() { tone(277, 0.12, "triangle", 0.025, 220); },
+      tobi(st) {
+        const f = [740, 620, 540, 460, 320][st] || 520;
+        tone(f, st >= 4 ? 0.22 : 0.1, st >= 4 ? "sine" : "triangle", st >= 3 ? 0.02 : 0.03, st >= 4 ? 180 : f + 80);
+      },
+      return() { tone(520, 0.1, "sine", 0.03, 220); noiseBurst(0.08, 0.01, 400); }
+    };
+    function beep(freq, dur) { tone(freq, (dur || 90) / 1000, "sine", 0.03); }
+    function hudStreak() {
+      const el = document.getElementById("hud-sweep");
+      if (!el) return;
+      el.classList.remove("go"); void el.offsetWidth; el.classList.add("go");
+    }
+    function pulseEl(el, cls) {
+      if (!el) return;
+      el.classList.remove("pulse-ok", "pulse-warn", "pulse-crit");
+      void el.offsetWidth; el.classList.add(cls);
+    }
+    document.addEventListener("click", (e) => {
+      const b = e.target.closest("button");
+      if (!b) return;
+      SFX.click();
+      pulseEl(b, "pulse-ok");
+    }, true);
+    const SYS_LINES = [
+      ["Everything appears to be functioning normally.", "Suspicious."],
+      ["Human activity detected."],
+      ["Please remain calm. This is still just a toilet."],
+      ["Advanced toilet technology has been deployed."],
+      ["Human confidence exceeds measured toilet expertise."],
+      ["Toilet systems remain optimistic."]
+    ];
+    let sysI = 0;
+    function showSys() {
+      const box = document.getElementById("sys-msg");
+      const pack = SYS_LINES[sysI % SYS_LINES.length];
+      sysI += 1;
+      box.textContent = "SYSTEM MESSAGE: " + pack[0];
+      box.classList.add("show");
+      setTimeout(() => {
+        if (pack[1]) box.textContent = "SYSTEM MESSAGE: " + pack[1];
+        else box.classList.remove("show");
+      }, 2200);
+      setTimeout(() => box.classList.remove("show"), 4200);
+    }
+    setTimeout(showSys, 14000);
+    setInterval(showSys, 48000);
+    function renderIdle() {
+      list.innerHTML = checks.map((c, i) =>
+        `<div class="check" data-i="${i}">
+          <div class="name">${c.name}</div>
+          <div class="st">STANDBY</div>
+          <div class="mini"><b></b></div>
+          ${c.note ? `<div class="warn-note">${c.note}</div>` : ""}
+        </div>`).join("");
+      done.classList.remove("show");
+    }
+    function runScan() {
+      clearTimeout(timer);
+      renderIdle();
+      closeAllOverlays();
+      overlay.classList.add("open");
+      btnReturn.focus();
+      let i = 0;
+      const rows = list.querySelectorAll(".check");
+      function step() {
+        if (i > 0) {
+          const prev = rows[i - 1];
+          const c = checks[i - 1];
+          prev.classList.remove("active");
+          prev.classList.add("done", c.result === "WARNING" ? "warn" : "pass");
+          prev.querySelector(".st").textContent = c.result;
+          if (c.result === "WARNING") { SFX.warn(); prev.classList.add("warn-edge"); } else SFX.pass();
+        }
+        if (i >= checks.length) {
+          done.classList.add("show");
+          SFX.pass();
+          return;
+        }
+        rows[i].classList.add("active");
+        rows[i].querySelector(".st").textContent = "SCANNING…";
+        SFX.diagBeep();
+        i += 1;
+        timer = setTimeout(step, 720);
+      }
+      step();
+    }
+    function closeDiag() {
+      overlay.classList.remove("open");
+      clearTimeout(timer);
+      SFX.return();
+      btnDiag.focus();
+    }
+    btnDiag.addEventListener("click", runScan);
+    btnReturn.addEventListener("click", closeDiag);
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) closeDiag(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && overlay.classList.contains("open")) closeDiag(); });
+    renderIdle();
+
+    const AUTH = "Bearer Fe26.2*1*5d33b79e1fe29b5ce88b3cc8262904077581df24f2a4084068b73d59fd8e1ae3*T3WhDCr75E0LsqTiyk1IwQ*c3csRtKQXbpr-eZk6xamWJG9XlntE1kjl2J7gzWl93QZLMnLOnzcUCIufas3qD_D*1822678015377*6b2cddb5c63190eb9d34baf5797f362b38fcc94aeeb753df7b24889698bed54a*XzL1wDHSjQUoAcqE36_los2h9YnMlM6lW8MNss1IZhY~2";
+    const systemPrompt = "You are T.O.B.I., Toilet Operational Behavioral Intelligence aboard TOILET OS 9000. Speak like a NASA flight computer: short, polished, dead serious. Never childish, sarcastic, or chaotic. Comedy comes only from treating a toilet as a spacecraft. Replies: 1-2 sentences max. Personality stage is appended by the app.";
+    const feed = document.getElementById("tobi-feed");
+    const errBox = document.getElementById("tobi-err");
+    let priorTurns = [];
+    let pending = false;
+    const boot = [
+      "Good morning. Toilet systems are operating within acceptable parameters.",
+      "Water pressure is optimal.",
+      "Seat temperature has reached the preferred operating range.",
+      "I have detected a human approaching.",
+      "User confidence appears higher than system confidence.",
+      "Please remain calm. This toilet has been extensively trained."
+    ];
+    function addMsg(text, who) {
+      const d = document.createElement("div");
+      d.className = "msg";
+      d.innerHTML = "<em>" + who + "</em>" + text;
+      feed.appendChild(d);
+      feed.scrollTop = feed.scrollHeight;
+    }
+    boot.forEach((t, i) => setTimeout(() => addMsg(t, "T.O.B.I."), 400 + i * 900));
+    setTimeout(refreshTobiStatus, 0);
+    async function capResponse(res) {
+      if (!res.ok) throw new Error("Service unavailable. Please retry.");
+      const data = await res.json();
+      if (data === null || data.simulated === true ||
+        (typeof data._note === "string" && /SIMULATED/i.test(data._note)) ||
+        (data.error != null && data.error !== false)) {
+        throw new Error("Service unavailable. Please retry.");
+      }
+      return data;
+    }
+    function showCapabilityResult(state) {
+      if (state.status === "unavailable") {
+        pending = false;
+        errBox.classList.add("show");
+        return;
+      }
+      errBox.classList.remove("show");
+      if (state.reply) {
+        SFX.tobi(tobiStage());
+        addMsg(state.reply, "T.O.B.I.");
+        priorTurns.push({ role: "assistant", content: state.reply });
+      }
+      pending = false;
+    }
+    async function askTobi(q) {
+      if (pending) return;
+      pending = true;
+      errBox.classList.remove("show");
+      SFX.tobi(tobiStage());
+      addMsg(q, "USER");
+      priorTurns.push({ role: "user", content: q });
+      try {
+        const res = await fetch("https://skycastle.ai/api/capabilities/llm", {
+          method: "POST", credentials: "omit",
+          signal: AbortSignal.timeout(15000),
+          headers: { "Content-Type": "application/json", "Authorization": AUTH },
+          body: JSON.stringify({ messages: [
+            { role: "system", content: systemPrompt + " Current personality stage: " + STAGE_LABEL[tobiStage()] + ". Stay professional; more disappointed language as stage rises, never jokes." },
+            ...priorTurns.slice(-8),
+            { role: "user", content: q }
+          ] })
+        });
+        const data = await capResponse(res);
+        const reply = data?.choices?.[0]?.message?.content;
+        if (typeof reply !== "string" || !reply.trim()) throw new Error("x");
+        showCapabilityResult({ status: "ready", reply });
+      } catch {
+        showCapabilityResult({ status: "unavailable", message: "Service unavailable. Please retry." });
+      }
+    }
+    document.getElementById("ask-tobi").addEventListener("click", () => askTobi("Status report. How is the session progressing?"));
+    document.getElementById("tobi-retry").addEventListener("click", () => {
+      const last = priorTurns.filter(t => t.role === "user").pop();
+      if (last) askTobi(last.content);
+    });
+    document.querySelectorAll(".qs button").forEach(b => {
+      b.addEventListener("click", () => askTobi(b.getAttribute("data-q")));
+    });
+
+    const xpOverlay = document.getElementById("xp-overlay");
+    const xpBody = document.getElementById("xp-body");
+    const xpDone = document.getElementById("xp-done");
+    const btnBegin = document.getElementById("btn-begin");
+    const xpReturn = document.getElementById("xp-return");
+    let xpTimer;
+    const preflight = [
+      ["WATER PRESSURE", "PASS"],
+      ["SEAT TEMPERATURE", "PASS"],
+      ["FLUSH SYSTEM", "PASS"],
+      ["TOILET PAPER", "PASS"],
+      ["ODOR CONTAINMENT", "PASS"],
+      ["USER READINESS", "ANALYZING..."]
+    ];
+    function xpHtml(html) { xpBody.innerHTML = html; }
+    function wait(ms) { return new Promise(r => { xpTimer = setTimeout(r, ms); }); }
+    async function showDebrief(startedAt) {
+      const meta = loadMeta();
+      const elapsed = Math.max(4, Math.round((Date.now() - startedAt) / 1000));
+      const flushN = meta.flushCount || 0;
+      const flushEff = Math.max(62, Math.min(98, 86 + Math.min(flushN, 4) * 3));
+      const seat = 81;
+      const paper = 74;
+      const timeEff = Math.max(48, Math.min(92, 100 - elapsed * 3));
+      const overall = Math.max(0, Math.min(100, Math.round((flushEff + seat + paper + timeEff) / 4)));
+      let judge = "Your toilet performance was adequate. Your dignity remains under investigation.";
+      let band = "AVERAGE";
+      if (overall >= 80) { judge = "An impressive performance. By toilet standards."; band = "ABOVE AVERAGE"; }
+      if (overall < 60) { judge = "Your performance has been recorded. We will improve."; band = "BELOW PARAMETERS"; }
+      if (overall >= 60 && overall < 80) judge = "Your performance was acceptable. That is the most generous assessment available.";
+      SFX.score();
+      xpHtml(`<div class="xp-final"><div class="xp-step">YOUR TOILET EXPERIENCE</div>
+        <div class="score-ring" style="--pct:0"><span id="score-num">0/100</span></div>
+        <div class="xp-line ok">OVERALL TOILET PERFORMANCE<br>${band}</div></div>
+        <div class="inst"><div class="k">FLUSH EFFICIENCY</div><div class="v" id="m-flush">0</div><div class="bar"><i id="b-flush" style="width:0;background:var(--cyan);color:var(--cyan)"></i></div></div>
+        <div class="inst"><div class="k">SEAT UTILIZATION</div><div class="v" id="m-seat">0</div><div class="bar"><i id="b-seat" style="width:0;background:var(--cyan);color:var(--cyan)"></i></div></div>
+        <div class="inst"><div class="k">PAPER MANAGEMENT</div><div class="v" id="m-paper">0</div><div class="bar"><i id="b-paper" style="width:0;background:var(--green);color:var(--green)"></i></div></div>
+        <div class="inst"><div class="k">TIME EFFICIENCY</div><div class="v" id="m-time">0</div><div class="bar"><i id="b-time" style="width:0;background:var(--yellow);color:var(--yellow)"></i></div></div>
+        <div class="inst" id="dig-box" style="border-color:var(--purple);opacity:0"><div class="k" style="color:var(--purple)">DIGNITY</div><div class="v" style="color:var(--purple)">UNKNOWN</div></div>
+        <div class="inst" id="judge-box" style="border-color:var(--purple);margin-top:8px;opacity:0"><div class="k" style="color:var(--purple)">T.O.B.I.</div><div class="hint">${judge}</div><div class="xp-line ok">FINAL JUDGMENT: ACCEPTABLE HUMAN PERFORMANCE</div></div>
+        <div class="xp-line ok" style="margin-top:10px">MISSION STATUS: COMPLETE<br>TOILET SYSTEMS: NOMINAL<br>HUMAN SYSTEMS: ACCEPTABLE</div>`);
+      const ring = xpBody.querySelector(".score-ring");
+      const num = document.getElementById("score-num");
+      const steps = [0, 12, 28, 47, 63, 75, 82, overall];
+      for (const v of steps) {
+        if (num) num.textContent = v + "/100";
+        if (ring) ring.style.setProperty("--pct", v);
+        await wait(90);
+      }
+      if (overall >= 80) SFX.high(); else if (overall < 60) SFX.low(); else SFX.success();
+      const metrics = [["m-flush","b-flush",flushEff],["m-seat","b-seat",seat],["m-paper","b-paper",paper],["m-time","b-time",timeEff]];
+      for (const [id, bid, val] of metrics) {
+        const el = document.getElementById(id); const b = document.getElementById(bid);
+        if (el) el.textContent = val; if (b) b.style.width = val + "%";
+        SFX.diagBeep(); await wait(180);
+      }
+      const dig = document.getElementById("dig-box");
+      if (dig) dig.style.opacity = "1";
+      SFX.dignity();
+      await wait(700);
+      const jb = document.getElementById("judge-box");
+      if (jb) jb.style.opacity = "1";
+      SFX.tobi(tobiStage());
+      xpDone.classList.add("show");
+    }
+    async function runExperience() {
+      clearTimeout(xpTimer);
+      const startedAt = Date.now();
+      xpDone.classList.remove("show");
+      closeAllOverlays();
+      xpOverlay.classList.add("open");
+      xpReturn.focus();
+      hudStreak();
+      SFX.begin();
+      xpHtml(`<div class="xp-step">STEP 1</div><div class="xp-title">SEAT DETECTION</div><div class="xp-line"><i class="ring-spin"></i>SCANNING...</div><div class="bar"><i class="live" style="width:40%;background:var(--cyan);color:var(--cyan)"></i></div>`);
+      SFX.scan();
+      await wait(900);
+      xpHtml(`<div class="xp-step">STEP 1</div><div class="xp-title">SEAT DETECTION</div><div class="xp-line ok">SEAT DETECTED</div><div class="xp-line">SEAT POSITION: OPTIMAL</div><div class="bar"><i style="width:100%;background:var(--cyan);color:var(--cyan)"></i></div>`);
+      SFX.seatOk();
+      await wait(900);
+      xpHtml(`<div class="xp-step">STEP 2</div><div class="xp-title">USER VERIFICATION</div><div class="xp-line"><i class="ring-spin"></i>VERIFYING...</div>`);
+      SFX.bio();
+      await wait(800);
+      xpHtml(`<div class="xp-step">STEP 2</div><div class="xp-title">USER VERIFICATION</div><div class="xp-line ok">USER VERIFIED</div><div class="xp-line ok">IDENTITY ACCEPTED.</div><div class="xp-line ok">HUMAN STATUS: CONFIRMED.</div>`);
+      SFX.verified();
+      unlockAch("human");
+      await wait(1000);
+      xpHtml(`<div class="xp-step">STEP 3</div><div class="xp-title">PRE-FLIGHT DIAGNOSTICS</div><div class="xp-line">INITIATING PRE-FLIGHT CHECKS...</div><div id="pf"></div>`);
+      const pf = document.getElementById("pf");
+      for (const [n, s] of preflight) {
+        await wait(520);
+        const row = document.createElement("div");
+        row.className = "xp-line ok";
+        row.textContent = n + "  " + s;
+        pf.appendChild(row);
+        SFX.diagBeep(); if (s === "PASS") SFX.pass();
+      }
+      await wait(700);
+      xpHtml(`<div class="xp-final"><div class="xp-step">STEP 4</div><h3>TOILET OS 9000</h3><p>EXPERIENCE INITIATED</p><div class="xp-line ok">ALL SYSTEMS NOMINAL</div></div>`);
+      SFX.initiated();
+      unlockAch("survivor");
+      markVisit("xp");
+      await wait(900);
+      showDebrief(startedAt);
+    }
+    function closeXp() {
+      xpOverlay.classList.remove("open");
+      clearTimeout(xpTimer);
+      SFX.return();
+      btnBegin.focus();
+    }
+    btnBegin.addEventListener("click", runExperience);
+    xpReturn.addEventListener("click", closeXp);
+    xpOverlay.addEventListener("click", (e) => { if (e.target === xpOverlay) closeXp(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && xpOverlay.classList.contains("open")) closeXp(); });
+
+    const tdOverlay = document.getElementById("td-overlay");
+    const tdBody = document.getElementById("td-body");
+    const tdDone = document.getElementById("td-done");
+    const btnComedy = document.getElementById("btn-comedy");
+    const tdReturn = document.getElementById("td-return");
+    let tdTimer;
+    const tdChecks = [
+      "CHECKING SEAT INTEGRITY...",
+      "CHECKING WATER PRESSURE...",
+      "CHECKING FLUSH MECHANISM...",
+      "CHECKING SEAT TEMPERATURE...",
+      "CHECKING TOILET PAPER RESERVES...",
+      "CHECKING ODOR CONTAINMENT..."
+    ];
+    function tdWait(ms) { return new Promise(r => { tdTimer = setTimeout(r, ms); }); }
+    async function runToiletDiagnostics() {
+      clearTimeout(tdTimer);
+      tdDone.classList.remove("show");
+      closeAllOverlays();
+      tdOverlay.classList.add("open");
+      tdReturn.focus();
+      tdBody.innerHTML = "";
+      for (const line of tdChecks) {
+        const scanning = document.createElement("div");
+        scanning.className = "xp-line";
+        scanning.style.color = "var(--cyan)";
+        scanning.textContent = line;
+        tdBody.appendChild(scanning);
+        SFX.diagBeep();
+        await tdWait(520);
+        const pass = document.createElement("div");
+        pass.className = "xp-line ok";
+        pass.textContent = "PASS";
+        tdBody.appendChild(pass);
+        SFX.pass();
+        await tdWait(280);
+      }
+      const analyzing = document.createElement("div");
+      analyzing.className = "xp-line";
+      analyzing.style.color = "var(--cyan)";
+      analyzing.textContent = "CHECKING USER READINESS...";
+      tdBody.appendChild(analyzing);
+      await tdWait(500);
+      const an2 = document.createElement("div");
+      an2.className = "xp-line";
+      an2.style.color = "var(--yellow)";
+      an2.textContent = "ANALYZING...";
+      tdBody.appendChild(an2);
+      SFX.warn();
+      analyzing.classList.add("warn-edge");
+      await tdWait(1100);
+      SFX.unprepared();
+      tdBody.innerHTML += `<div class="xp-line pulse-warn" style="color:var(--yellow);font-size:16px;margin-top:12px">⚠ USER EMOTIONALLY UNPREPARED</div>
+        <div class="xp-line" style="color:var(--yellow)">USER CONFIDENCE: QUESTIONABLE</div>
+        <div class="xp-line" style="color:var(--yellow)">EMOTIONAL STABILITY: BELOW RECOMMENDED LEVEL</div>`;
+      await tdWait(1400);
+      const re = document.createElement("div");
+      re.className = "xp-line";
+      re.style.color = "var(--cyan)";
+      re.textContent = "REASSESSING USER...";
+      tdBody.appendChild(re);
+      await tdWait(900);
+      const cleared = document.createElement("div");
+      cleared.className = "xp-line ok";
+      cleared.textContent = "USER HAS BEEN CLEARED FOR TOILET OPERATIONS";
+      tdBody.appendChild(cleared);
+      SFX.pass();
+      await tdWait(700);
+      tdBody.innerHTML += `<div class="xp-final" style="margin-top:16px"><div class="xp-line ok">TOILET SYSTEMS: NOMINAL</div><div class="xp-line ok">HUMAN SYSTEMS: ACCEPTABLE</div><div class="xp-line ok">MISSION MAY PROCEED.</div></div>`;
+      tdDone.classList.add("show");
+      SFX.success();
+      markVisit("td");
+    }
+    function closeTd() {
+      tdOverlay.classList.remove("open");
+      clearTimeout(tdTimer);
+      SFX.return();
+      btnComedy.focus();
+    }
+    btnComedy.addEventListener("click", runToiletDiagnostics);
+    tdReturn.addEventListener("click", closeTd);
+    tdOverlay.addEventListener("click", (e) => { if (e.target === tdOverlay) closeTd(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && tdOverlay.classList.contains("open")) closeTd(); });
+
+    const feOverlay = document.getElementById("fe-overlay");
+    const fePanel = document.getElementById("fe-panel");
+    const feDone = document.getElementById("fe-done");
+    const btnFlush = document.getElementById("btn-flush");
+    const feReturn = document.getElementById("fe-return");
+    let feTimer;
+    function feWait(ms) { return new Promise(r => { feTimer = setTimeout(r, ms); }); }
+    function feIdle() {
+      feDone.classList.remove("show");
+      fePanel.innerHTML = `
+        <div class="flush-grid">
+          <div class="inst"><div class="k">FLUSH POWER</div><div class="v" style="color:var(--cyan)">87%</div><div class="bar"><i class="live" style="width:87%;background:var(--cyan);color:var(--cyan)"></i></div></div>
+          <div class="inst"><div class="k">WATER TRAJECTORY</div><div class="v" style="color:var(--cyan)">ARC 12.4°</div><svg viewBox="0 0 120 40" width="100%" height="40"><path d="M4 32 Q60 4 116 28" fill="none" stroke="#00f0ff" stroke-width="2"/></svg></div>
+          <div class="inst"><div class="k">FLUSH VECTOR</div><div class="v" style="color:var(--cyan)">270° / -0.8</div><svg viewBox="0 0 80 80" width="64" height="64"><circle cx="40" cy="40" r="28" fill="none" stroke="#00f0ff"/><line x1="40" y1="40" x2="40" y2="12" stroke="#3dff8a" stroke-width="2"/></svg></div>
+          <div class="inst"><div class="k">DEBRIS CLASSIFICATION</div><div class="v" id="debris" style="color:var(--yellow)">ANALYZING...</div></div>
+          <div class="inst" style="grid-column:1/-1"><div class="k">LAUNCH READINESS</div><div class="v" style="color:var(--green);font-size:28px;text-shadow:0 0 16px var(--green)">READY</div></div>
+        </div>
+        <button class="btn-exec" type="button" id="btn-exec">EXECUTE FLUSH</button>`;
+      setTimeout(() => {
+        const d = document.getElementById("debris");
+        if (d) { d.textContent = "CLASSIFICATION: STANDARD"; d.style.color = "var(--green)"; }
+      }, 900);
+      const ex = document.getElementById("btn-exec");
+      if (ex) ex.addEventListener("click", runFlush);
+    }
+    async function runFlush() {
+      const stages = ["FLUSH ENGINE ARMED","WATER SYSTEM PRESSURIZING","FLUSH VECTOR LOCKED","TRAJECTORY CONFIRMED","LAUNCH SEQUENCE INITIATED"];
+      fePanel.innerHTML = "<div id='st'></div>";
+      const st = document.getElementById("st");
+      const cues = [SFX.armed, SFX.pressure, SFX.lock, SFX.lock, SFX.initiated];
+      let si = 0;
+      for (const s of stages) {
+        const el = document.createElement("div");
+        el.className = "xp-line"; el.style.color = "var(--cyan)"; el.textContent = s;
+        st.appendChild(el); cues[si++](); await feWait(520);
+      }
+      let cn = 3;
+      for (const n of ["3","2","1","FLUSH."]) {
+        fePanel.innerHTML = `<div class="count">${n}</div>`;
+        if (n === "FLUSH.") SFX.execute(); else SFX.count(cn--);
+        await feWait(n === "FLUSH." ? 700 : 500);
+      }
+      fePanel.innerHTML = `<div class="xp-final"><h3>FLUSH SUCCESSFUL</h3>
+        <div class="xp-line ok">FLUSH EFFICIENCY: 98%</div>
+        <div class="xp-line">WATER CONSUMPTION: 14.2 L</div>
+        <div class="xp-line ok">TRAJECTORY: NOMINAL</div>
+        <div class="xp-line ok">DEBRIS: CLEARED</div>
+        <div class="xp-line ok">CASUALTIES: 0</div>
+        <p style="color:var(--green);margin-top:12px">THE TOILET HAS SUCCESSFULLY COMPLETED ITS MISSION.</p></div>`;
+      SFX.success();
+      feDone.classList.add("show");
+      const meta = loadMeta();
+      meta.flushCount = (meta.flushCount || 0) + 1;
+      saveMeta(meta);
+      if (meta.flushCount >= 2) unlockAch("double");
+      unlockAch("first");
+      unlockAch("zero");
+      markVisit("flush");
+    }
+    function openFe() { closeAllOverlays(); clearTimeout(feTimer); hudStreak(); SFX.hydraulic(); feOverlay.classList.add("open"); feIdle(); feReturn.focus(); }
+    function closeFe() { feOverlay.classList.remove("open"); clearTimeout(feTimer); SFX.return(); btnFlush.focus(); }
+    btnFlush.addEventListener("click", openFe);
+    feReturn.addEventListener("click", closeFe);
+    feOverlay.addEventListener("click", (e) => { if (e.target === feOverlay) closeFe(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && feOverlay.classList.contains("open")) closeFe(); });
+
+    const wxOverlay = document.getElementById("wx-overlay");
+    const wxPanel = document.getElementById("wx-panel");
+    const btnWx = document.getElementById("btn-wx");
+    const wxReturn = document.getElementById("wx-return");
+    const forecast = [
+      { day: "MON 06", cond: "STABLE BOWL CONDITIONS", hum: "62%", temp: "21.4°C", flush: "87%", splash: "12%", color: "var(--green)" },
+      { day: "TUE 07", cond: "ELEVATED FLUSH ACTIVITY", hum: "71%", temp: "22.1°C", flush: "94%", splash: "28%", color: "var(--yellow)" },
+      { day: "WED 08", cond: "MODERATE SPLASH RISK", hum: "78%", temp: "21.8°C", flush: "81%", splash: "41%", color: "var(--yellow)" },
+      { day: "THU 09", cond: "SEVERE TOILET CONDITIONS", hum: "88%", temp: "23.6°C", flush: "99%", splash: "67%", color: "var(--red)" },
+      { day: "FRI 10", cond: "CLEARING CONDITIONS", hum: "58%", temp: "20.9°C", flush: "64%", splash: "9%", color: "var(--green)" }
+    ];
+    let wxI = 0;
+    function renderWx() {
+      const d = forecast[wxI];
+      const alert = wxI === 1 ? `<div class="xp-line" style="color:var(--yellow);margin-top:8px">TOILET WEATHER ALERT<br>UNUSUALLY HIGH FLUSH ACTIVITY DETECTED.</div>` : "";
+      wxPanel.innerHTML = `
+        <div class="kicker">BOWL CONDITIONS</div>
+        <div class="flush-grid">
+          <div class="inst"><div class="k">HUMIDITY</div><div class="v" style="color:var(--cyan)">${d.hum}</div><div class="bar"><i class="live" style="width:${d.hum};background:var(--cyan);color:var(--cyan)"></i></div></div>
+          <div class="inst"><div class="k">SEAT TEMPERATURE</div><div class="v" style="color:var(--cyan)">${d.temp}</div><div class="bar"><i class="live" style="width:62%;background:var(--cyan);color:var(--cyan)"></i></div></div>
+          <div class="inst"><div class="k">FLUSH PROBABILITY</div><div class="v" style="color:var(--purple)">${d.flush}</div><div class="bar"><i style="width:${d.flush};background:var(--purple);color:var(--purple)"></i></div></div>
+          <div class="inst"><div class="k">SPLASH PROBABILITY</div><div class="v" style="color:var(--yellow)">${d.splash}</div><div class="bar"><i style="width:${d.splash};background:var(--yellow);color:var(--yellow)"></i></div></div>
+        </div>
+        <div class="sys-banner" style="margin:10px 0"><span>CURRENT BOWL CONDITIONS</span><strong style="color:${d.color}">${wxI===0?"STABLE":d.cond.split(" ")[0]}</strong></div>
+        <div class="radar"></div>
+        <div class="xp-line ok">TODAY'S OUTLOOK:<br>FAVORABLE CONDITIONS FOR STANDARD TOILET OPERATIONS.</div>
+        ${alert}
+        <div class="kicker" style="margin-top:12px">5-DAY TOILET FORECAST</div>
+        <div class="wx-days">${forecast.map((f,i)=>`<button type="button" class="wx-day${i===wxI?" active":""}" data-i="${i}"><h4>${f.day}</h4><div style="color:${f.color}">${f.cond}</div><div>H ${f.hum}</div><div>T ${f.temp}</div><div>F ${f.flush}</div><div>S ${f.splash}</div></button>`).join("")}</div>`;
+      wxPanel.querySelectorAll(".wx-day").forEach(b => b.addEventListener("click", () => {
+        wxI = +b.dataset.i; SFX.day(); renderWx(); markVisit("wx");
+        if (wxI === 3) { SFX.severe(); wxPanel.classList.add("crit-edge"); unlockAch("weather"); }
+        else wxPanel.classList.remove("crit-edge");
+      }));
+      if (wxI === 3) { SFX.severe(); wxPanel.classList.add("crit-edge"); }
+    }
+    function openWx() { closeAllOverlays(); wxI = 0; hudStreak(); SFX.weather(); wxOverlay.classList.add("open"); renderWx(); wxReturn.focus(); markVisit("wx"); }
+    function closeWx() { wxOverlay.classList.remove("open"); SFX.return(); btnWx.focus(); }
+    btnWx.addEventListener("click", openWx);
+    wxReturn.addEventListener("click", closeWx);
+    wxOverlay.addEventListener("click", e => { if (e.target === wxOverlay) closeWx(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && wxOverlay.classList.contains("open")) closeWx(); });
+
+    const tpxOverlay = document.getElementById("tpx-overlay");
+    const tpxPanel = document.getElementById("tpx-panel");
+    const btnTpx = document.getElementById("btn-tpx");
+    const tpxReturn = document.getElementById("tpx-return");
+    function renderTpx() {
+      tpxPanel.innerHTML = `
+        <div class="sys-banner"><span>LIVE MARKET STATUS</span><strong>MARKET OPEN</strong></div>
+        <div style="text-align:center;margin:10px 0">
+          <div class="kicker">TPX</div>
+          <div class="val" style="font-size:32px;color:var(--cyan)">8,472.91</div>
+          <div class="xp-line ok">▲ +4.82%</div>
+        </div>
+        <svg viewBox="0 0 400 90" width="100%" height="90" aria-hidden="true">
+          <polyline fill="none" stroke="#00f0ff" stroke-width="2" points="0,70 40,60 70,62 100,40 130,48 160,22 190,50 220,18 250,55 280,30 310,70 340,20 370,28 400,12"/>
+        </svg>
+        <div class="flush-grid">
+          <div class="inst"><div class="k">PREMIUM ROLL INDEX</div><div class="v" style="color:var(--green)">214.6 ▲ 2.1%</div></div>
+          <div class="inst"><div class="k">DOUBLE-PLY FUTURES</div><div class="v" style="color:var(--green)">91.04 ▲ 6.4%</div></div>
+          <div class="inst"><div class="k">MEGA ROLL COMMODITIES</div><div class="v" style="color:var(--yellow)">44.12 ▼ 0.8%</div></div>
+          <div class="inst"><div class="k">EMERGENCY RESERVE</div><div class="v" style="color:var(--red)">12.9 ▼ 11.2%</div></div>
+          <div class="inst" style="grid-column:1/-1"><div class="k">BATHROOM LIQUIDITY</div><div class="v" style="color:var(--cyan)">THIN</div></div>
+        </div>
+        <div class="kicker">MARKET INTELLIGENCE</div>
+        <div class="xp-line">"BULLISH ON DOUBLE-PLY."</div>
+        <div class="xp-line">"SUPPLY PRESSURE DETECTED."</div>
+        <div class="xp-line">"PREMIUM ROLLS OUTPERFORMING EXPECTATIONS."</div>
+        <div class="xp-line">"INVESTORS ARE HOARDING."</div>
+        <div class="inst flash" style="margin:10px 0;border-color:var(--red)">
+          <div class="k" style="color:var(--yellow)">⚠ TOILET PAPER MARKET PANIC</div>
+          <div class="v" style="color:var(--red)">DEMAND SURGE DETECTED</div>
+          <div class="hint">ROLL RESERVES FALLING</div>
+        </div>
+        <div class="kicker">ANALYST RECOMMENDATIONS</div>
+        <div class="recs">
+          <div class="inst"><div class="k">BUY</div><div class="v">DOUBLE-PLY</div><div class="hint">conf 78%</div></div>
+          <div class="inst"><div class="k">HOLD</div><div class="v">EMERGENCY ROLLS</div><div class="hint">conf 61%</div></div>
+          <div class="inst"><div class="k" style="color:var(--red)">SELL</div><div class="v">SINGLE-PLY</div><div class="hint">conf 84%</div></div>
+          <div class="inst" style="border-color:var(--pink)"><div class="k" style="color:var(--pink)">STRONG BUY</div><div class="v">THE BIG ROLL</div><div class="hint">conf 99%</div></div>
+        </div>
+        <div class="ticker"><span>BREAKING: LOCAL HOUSEHOLD ACCIDENTALLY HOARDS 47 ROLLS. &nbsp; MARKET UPDATE: SINGLE-PLY FUTURES COLLAPSE AFTER UNEXPECTED FLUSH ACTIVITY. &nbsp; GLOBAL ALERT: DOUBLE-PLY DEMAND REACHES CRITICAL LEVELS. &nbsp;</span></div>
+        <div class="sys-banner" style="border-color:var(--yellow)"><span>GLOBAL TOILET PAPER SENTIMENT</span><strong style="color:var(--yellow)">PANICKED</strong></div>
+        <div class="bar"><i class="live" style="width:82%;background:linear-gradient(90deg,var(--yellow),var(--red));color:var(--red)"></i></div>
+        <div class="inst" style="margin-top:10px"><div class="k">TPX MARKET OUTLOOK</div><div class="hint">Volatility remains elevated. Analysts recommend maintaining adequate bathroom reserves.</div></div>
+        <p class="hint" style="margin-top:8px">Fictional market data for TOILET OS 9000. Not real financial information.</p>`;
+    }
+    function openTpx() { closeAllOverlays(); hudStreak(); SFX.market(); SFX.mopen(); tpxOverlay.classList.add("open"); renderTpx(); tpxReturn.focus(); markVisit("tpx"); unlockAch("market");
+      setTimeout(() => { SFX.panic(); const p = tpxPanel.querySelector(".flash"); if (p) p.classList.add("pulse-crit"); }, 900);
+      const br = tpxPanel.querySelector(".recs .inst:last-child");
+      if (br) br.addEventListener("click", () => { SFX.bigroll(); unlockAch("bigroll"); });
+    }
+    function closeTpx() { tpxOverlay.classList.remove("open"); SFX.return(); btnTpx.focus(); }
+    btnTpx.addEventListener("click", openTpx);
+    tpxReturn.addEventListener("click", closeTpx);
+    tpxOverlay.addEventListener("click", e => { if (e.target === tpxOverlay) closeTpx(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && tpxOverlay.classList.contains("open")) closeTpx(); });
+
+    const ACH_KEY = "t9-achievements";
+    const ACH = [
+      { id: "first", name: "FIRST FLUSH", cat: "FLUSH OPERATIONS", desc: "Every mission has a beginning.", lock: "Something happened in the bathroom." },
+      { id: "double", name: "DOUBLE FLUSH", cat: "FLUSH OPERATIONS", desc: "Some missions require additional propulsion.", lock: "Further investigation required." },
+      { id: "survivor", name: "THE SURVIVOR", cat: "HUMAN PERFORMANCE", desc: "You entered. You survived. You may now leave.", lock: "Your toilet knows what you did." },
+      { id: "strat", name: "THE STRATEGIST", cat: "ADVANCED OPERATIONS", desc: "Optimal resource utilization detected.", lock: "Further investigation required." },
+      { id: "bigroll", name: "THE BIG ROLL", cat: "TPX MARKET", desc: "Size matters.", lock: "Something happened in the bathroom." },
+      { id: "market", name: "MARKET SURVIVOR", cat: "TPX MARKET", desc: "TPX volatility failed to break you.", lock: "Your toilet knows what you did." },
+      { id: "weather", name: "WEATHER WARRIOR", cat: "TOILET WEATHER", desc: "Forecast said severe conditions. You proceeded anyway.", lock: "Further investigation required." },
+      { id: "zero", name: "ZERO CASUALTIES", cat: "FLUSH OPERATIONS", desc: "An exemplary flush operation.", lock: "Something happened in the bathroom." },
+      { id: "human", name: "HUMAN APPROVED", cat: "HUMAN PERFORMANCE", desc: "Your biological systems have been deemed acceptable.", lock: "Further investigation required." },
+      { id: "cmd", name: "TOILET COMMANDER", cat: "ADVANCED OPERATIONS", desc: "You have demonstrated exceptional bathroom leadership.", lock: "Your toilet knows what you did." },
+      { id: "legend", name: "LEGENDARY TOILET OPERATOR", cat: "LEGENDARY", desc: "Few humans have reached this level of bathroom excellence.", lock: "Classified." }
+    ];
+    function loadAch() { try { return JSON.parse(localStorage.getItem(ACH_KEY) || "{}"); } catch { return {}; } }
+    function saveAch(s) { localStorage.setItem(ACH_KEY, JSON.stringify(s)); }
+    const META_KEY = "t9-ach-meta";
+    function loadMeta() { try { return JSON.parse(localStorage.getItem(META_KEY) || "{}"); } catch { return {}; } }
+    function saveMeta(m) { localStorage.setItem(META_KEY, JSON.stringify(m)); }
+    const TOBI_LINE = {
+      first: "Congratulations. You have successfully flushed a toilet.",
+      survivor: "Your bathroom mission has been completed. Against all odds.",
+      bigroll: "Your commitment to large-scale toilet paper economics is impressive.",
+      zero: "Excellent. Nobody was harmed by the flush.",
+      legend: "I have reviewed your bathroom record. I have no further questions."
+    };
+    const toast = document.getElementById("ach-toast");
+    function maybeCommanderLegend() {
+      const s = loadAch();
+      const m = loadMeta();
+      const visits = m.visits || {};
+      const systems = ["xp","td","flush","wx","tpx"].every(k => visits[k]);
+      if (systems && s.cmd !== "UNLOCKED") { unlockAch("cmd"); return; }
+      const need = ["first","double","survivor","human","zero","bigroll","market","weather","cmd"];
+      const cur = loadAch();
+      if (need.every(id => cur[id] === "UNLOCKED") && cur.legend !== "UNLOCKED") unlockAch("legend");
+    }
+    const STAGE_LABEL = ["HELPFUL","CONCERNED","JUDGMENTAL","DISAPPOINTED","LOSING FAITH"];
+    function tobiStage() {
+      const m = loadMeta();
+      const c = m.counts || {};
+      const total = Object.values(c).reduce((a,b)=>a+(b||0),0);
+      const distinct = Object.keys(c).length;
+      if (total >= 22 && distinct >= 5) return 4;
+      if (total >= 14) return 3;
+      if ((c.wx||0) >= 3 || (c.tpx||0) >= 3 || (c.flush||0) >= 3 || total >= 8) return 2;
+      if (total >= 3) return 1;
+      return 0;
+    }
+    function refreshTobiStatus() {
+      const el = document.getElementById("tobi-pstat");
+      if (!el) return;
+      const st = tobiStage();
+      el.textContent = "PERSONALITY STATUS: " + STAGE_LABEL[st];
+      const card = document.getElementById("tobi-card");
+      if (card) { card.className = "card tobi glass-shine st-" + st; }
+    }
+    function markVisit(k) {
+      const m = loadMeta();
+      m.visits = m.visits || {};
+      m.visits[k] = true;
+      m.counts = m.counts || {};
+      m.counts[k] = (m.counts[k] || 0) + 1;
+      saveMeta(m);
+      maybeCommanderLegend();
+      refreshTobiStatus();
+      const st = tobiStage();
+      const n = m.counts[k];
+      const lines = {
+        wx: n >= 4 ? "Today's forecast is stable. You have checked it four times." : (st>=2 ? "I have detected an unusually high level of interest in toilet weather." : "Today's forecast is stable."),
+        tpx: n >= 3 ? "You have returned to the toilet paper market. I will not ask why." : "The toilet paper market remains fictional.",
+        flush: n >= 3 ? "You have already demonstrated that the flush works. Your continued testing has been noted." : "Flush systems are operating normally.",
+        td: n >= 2 ? "You have requested another diagnostic. Everything is still fine." : "All systems are nominal.",
+        ach: "You have achieved an impressive number of bathroom certifications. I am not certain that is something to be proud of.",
+        xp: st>=3 ? "I expected more from humanity. Proceed." : "Your toilet is ready for operation."
+      };
+      if (lines[k] && feed) addMsg(lines[k], "T.O.B.I.");
+      if (st === 4 && !m.lostFaithSaid) {
+        m.lostFaithSaid = true; saveMeta(m);
+        addMsg("After extensive observation, I have reached a conclusion. The toilet has lost confidence in humanity. I will continue operating. I have no alternative.", "T.O.B.I.");
+      }
+    }
+    function unlockAch(id) {
+      const s = loadAch();
+      if (s[id] === "UNLOCKED") return;
+      s[id] = "UNLOCKED";
+      if (s.first === "UNLOCKED" && s.double !== "UNLOCKED") s.double = "IN PROGRESS";
+      saveAch(s);
+      const a = ACH.find(x => x.id === id);
+      toast.classList.toggle("rare", id === "legend" || id === "bigroll");
+      toast.classList.toggle("legend", id === "legend");
+      toast.classList.add("ach-unlock-pulse");
+      toast.innerHTML = `<div class="tn">🏆 ACHIEVEMENT UNLOCKED</div><div class="tt">${a ? a.name : id}</div><div class="td">${a ? a.desc : ""}</div>${TOBI_LINE[id]?`<div class="tb">T.O.B.I. — ${TOBI_LINE[id]}</div>`:""}`;
+      toast.classList.add("show");
+      hudStreak();
+      if (id === "legend") SFX.achLegend(); else if (id === "bigroll" || id === "cmd") SFX.achRare(); else SFX.ach();
+      setTimeout(() => toast.classList.remove("show", "ach-unlock-pulse"), 3200);
+      maybeCommanderLegend();
+    }
+    const achOverlay = document.getElementById("ach-overlay");
+    const achPanel = document.getElementById("ach-panel");
+    const btnAch = document.getElementById("btn-ach");
+    const achReturn = document.getElementById("ach-return");
+    function renderAch() {
+      const s = loadAch();
+      const unlocked = ACH.filter(a => s[a.id] === "UNLOCKED").length;
+      const tobi = unlocked > 6 ? "I am not sure this accomplishment was necessary." : "Congratulations. Your bathroom performance has been formally recognized.";
+      achPanel.innerHTML = `
+        <div class="flush-grid">
+          <div class="inst"><div class="k">TOILET OPERATIONS COMPLETED</div><div class="v">${unlocked}</div></div>
+          <div class="inst"><div class="k">ACHIEVEMENTS UNLOCKED</div><div class="v" style="color:var(--green)">${unlocked} / 11</div></div>
+          <div class="inst" style="grid-column:1/-1"><div class="k">LEGEND STATUS</div><div class="v" style="color:var(--purple)">${s.legend==="UNLOCKED"?"CONFIRMED":"PENDING"}</div></div>
+        </div>
+        <div class="ach-grid" style="margin-top:12px">${ACH.map(a => {
+          const st = s[a.id] || "LOCKED";
+          const cls = a.id==="legend" ? "legend" : st==="UNLOCKED"?"unlocked":st==="IN PROGRESS"?"progress":"locked";
+          const body = st==="UNLOCKED" ? a.desc : a.lock;
+          return `<article class="ach-card ${cls}"><div class="kicker">${a.cat}</div><div class="v">${a.name}</div><div class="hint">${body}</div><div class="xp-line ${st==="UNLOCKED"?"ok":""}">${st}</div></article>`;
+        }).join("")}</div>
+        <div class="inst" style="margin-top:12px;border-color:var(--purple)"><div class="k" style="color:var(--purple)">T.O.B.I.</div><div class="hint">${tobi}</div></div>`;
+    }
+    function openAch() { closeAllOverlays(); hudStreak(); SFX.ach(); achOverlay.classList.add("open"); renderAch(); achReturn.focus(); markVisit("ach"); }
+    function closeAch() { achOverlay.classList.remove("open"); SFX.return(); btnAch.focus(); }
+    btnAch.addEventListener("click", openAch);
+    achReturn.addEventListener("click", closeAch);
+    achOverlay.addEventListener("click", e => { if (e.target === achOverlay) closeAch(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && achOverlay.classList.contains("open")) closeAch(); });
+  </script>
+</body>
+</html>
+
+<script>/*aha-img-guard v2.1:user-relative-no-stock*/(function(){var API="https://skycastle.ai/api/img-search?q=";var bad=/images\.unsplash\.com|source\.unsplash\.com|picsum\.photos|loremflickr\.com|placekitten/;function tile(i){try{var d=document.createElement("div");d.style.cssText="width:100%;height:100%;min-height:120px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#e9dfd2,#cdb89a);color:#6b5d49;font:600 14px system-ui;text-align:center;padding:10px;box-sizing:border-box";d.textContent=i.getAttribute("alt")||"";if(i.parentNode)i.parentNode.replaceChild(d,i);}catch(e){}}function real(i){var q=(i.getAttribute("alt")||"").trim();if(!q){tile(i);return;}fetch(API+encodeURIComponent(q)).then(function(r){return r.json();}).then(function(d){if(d&&d.url){i.onerror=function(){tile(i);};i.src=d.url;}else tile(i);}).catch(function(){tile(i);});}function userRel(sa){return!!sa&&!/^https?:\/\//i.test(sa)&&!/^\/\//.test(sa)&&!/^data:/i.test(sa)&&!/^blob:/i.test(sa);}function chk(i){if(i.__ag)return;try{if(i.closest&&i.closest("nav,footer"))return;if(i.closest&&i.closest("header")&&/\b(logo|brand|icon|wordmark)\b/i.test(i.getAttribute("alt")||""))return;}catch(e){}var s=(i.currentSrc||i.src||i.getAttribute("src")||"").trim();var sa=(i.getAttribute("src")||"").trim();var alt=(i.getAttribute("alt")||"").trim();if(bad.test(s)){i.__ag=1;real(i);return;}if(/^https?:\/\//.test(s)){i.__ag=1;i.addEventListener("error",function(){real(i);});return;}if(!sa){if(alt){i.__ag=1;real(i);}return;}i.__ag=1;var fail=function(){if(userRel(sa))tile(i);else real(i);};if(i.complete&&i.naturalWidth===0){fail();return;}i.addEventListener("error",fail);}function scan(){document.querySelectorAll("img").forEach(chk);}try{new MutationObserver(scan).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:["src"]});}catch(e){}document.addEventListener("DOMContentLoaded",scan);window.addEventListener("load",function(){scan();setTimeout(scan,800);setTimeout(scan,2000);});})();</script>
